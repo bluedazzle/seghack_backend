@@ -10,3 +10,11 @@ class AgoraView(TemplateView):
 
 class RoomView(TemplateView):
     template_name = 'room.html'
+
+
+class UserAView(TemplateView):
+    template_name = 'UserA.html'
+
+
+class UserBView(TemplateView):
+    template_name = 'UserB.html'

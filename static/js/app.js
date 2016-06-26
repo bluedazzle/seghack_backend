@@ -1,3 +1,13 @@
+var config = {
+  apiKey: "AIzaSyCCHea2J-5LFjy2mzjQejfF1BRRLmiKark",
+  authDomain: "movietest-8510c.firebaseapp.com",
+  databaseURL: "https://movietest-8510c.firebaseio.com",
+  storageBucket: "",
+};
+firebase.initializeApp(config);
+
+var DATABASE='seghack/789';
+
 var WILL = {
 	// backgroundColor: Module.Color.WHITE,
 	strokes: new Array(),
@@ -183,14 +193,32 @@ var client = {
 	writers: [],
 
 	init: function() {
-		this.id = parent.server.getSessionID(this.name);
+		// this.id = parent.server.getSessionID(this.name);
+		this.id=new Date;
 
 		this.encoder = new Module.PathOperationEncoder();
 		this.decoder = new Module.PathOperationDecoder(Module.PathOperationDecoder.getPathOperationDecoderCallbacksHandler(this.callbacksHandlerImplementation));
+
+		firebase.database().ref(DATABASE).on("value", function(snapshot) {
+			var data = snapshot.val();
+			console.log("receive.data");
+			console.log(data);
+
+
+		});
+
 	},
 
 	send: function(compose) {
-		parent.server.receive(this.id, Module.readBytes(this.encoder.getBytes()), compose);
+		// parent.server.receive(this.id, Module.readBytes(this.encoder.getBytes()), compose);
+
+		var localData=Module.readBytes(this.encoder.getBytes());
+		firebase.database().ref(DATABASE).push({
+			// name: movieName
+			name:this.id,
+			data:localData
+		});
+
 		this.encoder.reset();
 	},
 

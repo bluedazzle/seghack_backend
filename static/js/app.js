@@ -6,7 +6,7 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var DATABASE='seghack/789';
+var DATABASE='seghack/777';
 
 var WILL = {
 	// backgroundColor: Module.Color.WHITE,
@@ -194,7 +194,7 @@ var client = {
 
 	init: function() {
 		// this.id = parent.server.getSessionID(this.name);
-		this.id=new Date;
+		this.id=new Date().getUTCMilliseconds();
 
 		this.encoder = new Module.PathOperationEncoder();
 		this.decoder = new Module.PathOperationDecoder(Module.PathOperationDecoder.getPathOperationDecoderCallbacksHandler(this.callbacksHandlerImplementation));
@@ -202,7 +202,14 @@ var client = {
 		firebase.database().ref(DATABASE).on("value", function(snapshot) {
 			var data = snapshot.val();
 			console.log("receive.data");
-			console.log(data);
+			// console.log(data);
+			for (var key in data) {
+				var sender = data['sender'];
+				var points = data['points'];
+				if (sender != this.id) {
+					this.receive(sender, points);
+				}
+			}
 
 
 		});
@@ -215,10 +222,11 @@ var client = {
 		var localData=Module.readBytes(this.encoder.getBytes());
 		firebase.database().ref(DATABASE).push({
 			// name: movieName
-			name:this.id,
-			data:localData
+			sender:this.id,
+			points:localData
 		});
 
+		console.log(this.id);
 		this.encoder.reset();
 	},
 

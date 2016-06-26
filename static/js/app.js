@@ -4,7 +4,7 @@ var config = {
   databaseURL: "https://movietest-8510c.firebaseio.com",
   storageBucket: "",
 };
-firebase.initializeApp(config);
+//firebase.initializeApp(config);
 
 var DATABASE='seghack/777';
 
@@ -199,20 +199,20 @@ var client = {
 		this.encoder = new Module.PathOperationEncoder();
 		this.decoder = new Module.PathOperationDecoder(Module.PathOperationDecoder.getPathOperationDecoderCallbacksHandler(this.callbacksHandlerImplementation));
 
-		firebase.database().ref(DATABASE).on("value", function(snapshot) {
-			var data = snapshot.val();
-			console.log("receive.data");
-			// console.log(data);
-			for (var key in data) {
-				var sender = data['sender'];
-				var points = data['points'];
-				if (sender != this.id) {
-					this.receive(sender, points);
-				}
-			}
-
-
-		});
+		//firebase.database().ref(DATABASE).on("value", function(snapshot) {
+		//	var data = snapshot.val();
+		//	console.log("receive.data");
+		//	// console.log(data);
+		//	for (var key in data) {
+		//		var sender = data['sender'];
+		//		var points = data['points'];
+		//		if (sender != this.id) {
+		//			this.receive(sender, points);
+		//		}
+		//	}
+        //
+        //
+		//});
 
 	},
 
@@ -220,11 +220,11 @@ var client = {
 		// parent.server.receive(this.id, Module.readBytes(this.encoder.getBytes()), compose);
 
 		var localData=Module.readBytes(this.encoder.getBytes());
-		firebase.database().ref(DATABASE).push({
-			// name: movieName
-			sender:this.id,
-			points:localData
-		});
+		//firebase.database().ref(DATABASE).push({
+		//	// name: movieName
+		//	sender:this.id,
+		//	points:localData
+		//});
 
 		console.log(this.id);
 		this.encoder.reset();
